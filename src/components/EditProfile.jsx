@@ -9,10 +9,10 @@ const EditProfile = ({ user }) => {
     const dispatch = useDispatch();
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLasttName] = useState(user.lastName);
-    const [age, setAge] = useState(user.age);
+    const [age, setAge] = useState(user.age || '');
     const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
     const [about, setAbout] = useState(user.about);
-    const [gender, setGender] = useState(user.firstName);
+    const [gender, setGender] = useState(user.gender || 'male');
 
     const [error, setError] = useState("");
     const [showToast, setToast] = useState("");
@@ -53,10 +53,16 @@ const EditProfile = ({ user }) => {
                             <legend className="fieldset-legend">Age</legend>
                             <input type="text" className="input" value={age} onChange={(e) => setAge(e.target.value)} />
                         </fieldset>
-                        <fieldset className="fieldset">
-                            <legend className="fieldset-legend">Gender</legend>
-                            <input type="text" className="input" value={gender} onChange={(e) => setGender(e.target.value)} />
-                        </fieldset>
+                         <fieldset className="fieldset">
+                                <legend className="fieldset-legend">Gender</legend>
+                                <select value={gender}
+                                    onChange={(e) => setGender(e.target.value)}
+                                    className="select">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="others">Others</option>
+                                </select>
+                            </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Photo Url</legend>
                             <input type="text" className="input" value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} />
