@@ -3,15 +3,16 @@ import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/connectionSlice";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Connections = () => {
     const dispatch = useDispatch();
     const connections = useSelector(store => store.connections);
     const fetchConnections = async () => {
         try {
-            const connectionResponse = await axios.get(BASE_URL + "/user/connections", {withCredentials: true});
+            const connectionResponse = await axios.get(BASE_URL + "/user/connections", { withCredentials: true });
             dispatch(addConnections(connectionResponse.data))
-        } catch(err) {
+        } catch (err) {
             console.log("Error ::", err);
         }
     }
@@ -24,33 +25,38 @@ const Connections = () => {
     if (!connections) return;
 
     if (connections.length === 0) {
-       return <h1 className="flex justify-center">No Connections found</h1>
+        return <h1 className="flex justify-center">No Connections found</h1>
     }
 
     return (
         <div className="flex flex-col items-center gap-5 my-10">
             <h1 className="text-bold text-white text-3xl">Connections</h1>
 
-             {connections.map(connection => {
-                const {_id, firstName, lastName, photoUrl, about, age, gender} = connection;
+            {connections.map(connection => {
+                const { _id, firstName, lastName, photoUrl, about, age, gender } = connection;
 
                 return (
-                    <div key={_id} className="flex gap-10 p-4 m-4 bg-base-300 items-center w-1/2">
-                        <div>
-                            <img alt="user" src={photoUrl} className="w-20 h-20 rounded-full"/>
+                    <div key={_id} className="flex gap-10 p-4 m-4 bg-base-300 justify-between items-center w-1/3">
+                        <div className="flex items-center gap-10">
+                            <div>
+                                <img alt="user" src={photoUrl} className="w-20 h-20 rounded-full" />
+                            </div>
+                            <div className="text-left">
+                                <h2 className="font-bold text-xl">{firstName + " " + lastName}</h2>
+                                {age && gender && <p>{age + ", " + gender}</p>}
+                                <p>{about}</p>
+                            </div>
                         </div>
-                         <div className="text-left">
-                           <h2 className="font-bold text-xl">{firstName + " " + lastName}</h2>
-                           {age && gender && <p>{age + ", " + gender}</p>}
-                           <p>{about}</p>
+                        <div>
+                            <Link to={"/chat/"+ _id}> <button className="btn btn-primary">Chat</button></Link>
                         </div>
                     </div>
                 )
 
-        })}
+            })}
         </div>
 
-       
+
     )
 }
 
